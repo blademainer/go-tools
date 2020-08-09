@@ -6,3 +6,4 @@ go get -u golang.org/x/lint/golint
 go get github.com/golang/mock/mockgen
 go get -u github.com/swaggo/swag/cmd/swag
 go get -u golang.org/x/tools/...
+go get github.com/golangci/golangci-lint/cmd/golangci-lint
