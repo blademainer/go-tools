@@ -18,11 +18,10 @@ RUN export REPOSITORY=`cat /tmp/go.mod | grep -E "^module\s[0-9a-zA-Z\./_\-]+" |
         exit 1; \
     else \
         echo "path===${GOPATH}/src/$REPOSITORY"; \
-    fi
-
-RUN cp -R /tmp ${GOPATH}/src/${REPOSITORY}
-
-RUN cd ${BUILD_PROJECT_PATH} && \
+    fi; \
+    mkdir -p "${BUILD_PROJECT_PATH}"; \
+    cp -R /tmp/* ${BUILD_PROJECT_PATH}; \
+    cd ${BUILD_PROJECT_PATH}; \
     if [ -f "go_build.sh" ]; then \
         bash go_build.sh; \
     fi
