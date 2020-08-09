@@ -1,21 +1,22 @@
 FROM golang:latest as build
 
-ARG repository
-ARG goproxy
-ENV BUILD_PROJECT_PATH=${GOPATH}/src/${repository}
+ARG REPOSITORY
+ARG GOPROXY
+ENV BUILD_PROJECT_PATH=${GOPATH}/src/${REPOSITORY}
 ENV GO111MODULE=on
-ENV GOPROXY=${goproxy}
+ENV GOPROXY=${GOPROXY}
 ENV BIN=/app/bin
 
-RUN env; \
-    if [ -z "$repository" ]; then \
+RUN setup.sh; \
+    env; \
+    if [ -z "$REPOSITORY" ]; then \
         echo "repository arg is null!"; \
         exit 1; \
     else \
-        echo "path===${GOPATH}/src/$repository"; \
+        echo "path===${GOPATH}/src/$REPOSITORY"; \
     fi
 
-ADD . ${GOPATH}/src/${repository}
+ADD . ${GOPATH}/src/${REPOSITORY}
 
 RUN cd ${BUILD_PROJECT_PATH} && \
     if [ -f "go_build.sh" ]; then \
@@ -25,15 +26,15 @@ RUN cd ${BUILD_PROJECT_PATH} && \
         exit 1; \
     fi
 
-FROM alpine:latest as certs
-RUN apk --update add ca-certificates && \
-    apk add bash && \
-    mkdir -p /app
-ARG app
-ENV APP=$app
-
-COPY --from=build /app/bin/ /app/
-
-WORKDIR /app
-CMD ["bash", "-c", "/app/${APP}"]
-EXPOSE 8080
+#FROM alpine:latest as certs
+#RUN apk --update add ca-certificates && \
+#    apk add bash && \
+#    mkdir -p /app
+#ARG app
+#ENV APP=$app
+#
+#COPY --from=build /app/bin/ /app/
+#
+#WORKDIR /app
+#CMD ["bash", "-c", "/app/${APP}"]
+#EXPOSE 8080

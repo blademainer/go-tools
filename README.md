@@ -1,4 +1,8 @@
-# action-test
-[![Builder](https://github.com/pjoc-team/go-action-template/workflows/Builder/badge.svg?branch=master)](https://github.com/pjoc-team/go-action-template/actions)
+# go-tools
 
-Github action test
+Support go tools:
+
+- mockgen
+- golint
+- swag
+- [gotools](golang.org/x/tools)

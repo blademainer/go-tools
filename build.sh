@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
-export REPOSITORY=`cat go.mod | grep -E "^module\s[0-9a-zA-Z\./_\-]+" | awk '{print $2}'`
-export NAME=`basename $REPOSITORY`
-docker build --build-arg repository=$REPOSITORY --build-arg goproxy=${GOPROXY} --build-arg app=${NAME} . -t image --file Dockerfile
+cur_script_dir="$(cd $(dirname $0) && pwd)"
+WORK_HOME="${cur_script_dir}"
+source "${WORK_HOME}/setup.sh"
+docker build --build-arg REPOSITORY=$REPOSITORY --build-arg GOPROXY=${GOPROXY} --build-arg APP=${NAME} . -t image --file Dockerfile
