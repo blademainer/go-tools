@@ -21,20 +21,11 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      - name: env
-        run: |
-          env
-          export IMAGE_NAME=$(basename ${{ github.repository }})
-          export IMAGE_ID=${{ secrets.DOCKER_USERNAME }}/$IMAGE_NAME
-          env
-      - name: setup
-        run: |
-
       - name: Build and push Docker images
         uses: docker/build-push-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: ${IMAGE_ID}
+          repository: blademainer/go-tools
           tag_with_ref: true
           tag_with_sha: true
