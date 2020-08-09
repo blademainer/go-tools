@@ -7,7 +7,11 @@ ENV GO111MODULE=on
 ENV GOPROXY=${GOPROXY}
 ENV BIN=/app/bin
 
-RUN setup.sh; \
+ADD . /tmp
+RUN export REPOSITORY=`cat /tmp/go.mod | grep -E "^module\s[0-9a-zA-Z\./_\-]+" | awk '{print $2}'`; \
+    export NAME=`basename $REPOSITORY`; \
+    export APP=`basename $REPOSITORY`; \
+    export BUILD_PROJECT_PATH="${GOPATH}/src/${REPOSITORY}"; \
     env; \
     if [ -z "$REPOSITORY" ]; then \
         echo "repository arg is null!"; \
@@ -16,14 +20,11 @@ RUN setup.sh; \
         echo "path===${GOPATH}/src/$REPOSITORY"; \
     fi
 
-ADD . ${GOPATH}/src/${REPOSITORY}
+RUN cp -R /tmp ${GOPATH}/src/${REPOSITORY}
 
 RUN cd ${BUILD_PROJECT_PATH} && \
     if [ -f "go_build.sh" ]; then \
         bash go_build.sh; \
-    else \
-        echo "not found: go_build.sh"; \
-        exit 1; \
     fi
 
 #FROM alpine:latest as certs

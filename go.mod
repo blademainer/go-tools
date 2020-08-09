@@ -1,4 +1,4 @@
-module github.com/pjoc-team/go-action-template
+module github.com/blademainer/go-tools
 
 go 1.14
 
